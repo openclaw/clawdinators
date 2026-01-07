@@ -10,8 +10,8 @@ Usage:
 - export AWS_SECRET_ACCESS_KEY=...
 - export AWS_REGION=eu-central-1
 - export TF_VAR_aws_region=eu-central-1
-- export TF_VAR_ami_id=ami-...
-- export TF_VAR_ssh_public_key="$(cat ~/.ssh/id_ed25519.pub)"
+- export TF_VAR_ami_id=ami-...   # leave empty to skip instance creation
+- export TF_VAR_ssh_public_key="$(cat ~/.ssh/id_ed25519.pub)"   # required when ami_id is set
 - tofu init
 - tofu apply
 

@@ -4,6 +4,7 @@ provider "aws" {
 
 locals {
   tags = merge(var.tags, { "app" = "clawdinator" })
+  instance_enabled = var.ami_id != ""
 }
 
 resource "aws_s3_bucket" "image_bucket" {
@@ -121,8 +122,12 @@ data "aws_iam_policy_document" "ami_importer" {
     sid = "ImportImage"
     actions = [
       "ec2:ImportImage",
+      "ec2:ImportSnapshot",
+      "ec2:DescribeImportSnapshotTasks",
       "ec2:DescribeImportImageTasks",
       "ec2:DescribeImages",
+      "ec2:DescribeSnapshots",
+      "ec2:RegisterImage",
       "ec2:CreateTags"
     ]
     resources = ["*"]
@@ -153,12 +158,14 @@ data "aws_subnets" "default" {
 }
 
 resource "aws_key_pair" "operator" {
+  count      = local.instance_enabled ? 1 : 0
   key_name   = "clawdinator-operator"
   public_key = var.ssh_public_key
   tags       = local.tags
 }
 
 resource "aws_security_group" "clawdinator" {
+  count       = local.instance_enabled ? 1 : 0
   name        = "clawdinator"
   description = "CLAWDINATOR access"
   vpc_id      = data.aws_vpc.default.id
@@ -166,8 +173,9 @@ resource "aws_security_group" "clawdinator" {
 }
 
 resource "aws_security_group_rule" "ssh_ingress" {
+  count             = local.instance_enabled ? 1 : 0
   type              = "ingress"
-  security_group_id = aws_security_group.clawdinator.id
+  security_group_id = aws_security_group.clawdinator[0].id
   from_port         = 22
   to_port           = 22
   protocol          = "tcp"
@@ -175,8 +183,9 @@ resource "aws_security_group_rule" "ssh_ingress" {
 }
 
 resource "aws_security_group_rule" "gateway_ingress" {
+  count             = local.instance_enabled ? 1 : 0
   type              = "ingress"
-  security_group_id = aws_security_group.clawdinator.id
+  security_group_id = aws_security_group.clawdinator[0].id
   from_port         = 18789
   to_port           = 18789
   protocol          = "tcp"
@@ -184,8 +193,9 @@ resource "aws_security_group_rule" "gateway_ingress" {
 }
 
 resource "aws_security_group_rule" "egress" {
+  count             = local.instance_enabled ? 1 : 0
   type              = "egress"
-  security_group_id = aws_security_group.clawdinator.id
+  security_group_id = aws_security_group.clawdinator[0].id
   from_port         = 0
   to_port           = 0
   protocol          = "-1"
@@ -193,11 +203,12 @@ resource "aws_security_group_rule" "egress" {
 }
 
 resource "aws_instance" "clawdinator" {
+  count                       = local.instance_enabled ? 1 : 0
   ami                         = var.ami_id
   instance_type               = var.instance_type
   subnet_id                   = element(data.aws_subnets.default.ids, 0)
-  vpc_security_group_ids      = [aws_security_group.clawdinator.id]
-  key_name                    = aws_key_pair.operator.key_name
+  vpc_security_group_ids      = [aws_security_group.clawdinator[0].id]
+  key_name                    = aws_key_pair.operator[0].key_name
   associate_public_ip_address = true
 
   tags = merge(local.tags, {

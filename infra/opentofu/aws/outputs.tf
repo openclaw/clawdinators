@@ -24,16 +24,16 @@ output "secret_access_key" {
 }
 
 output "instance_id" {
-  value       = aws_instance.clawdinator.id
+  value       = local.instance_enabled ? aws_instance.clawdinator[0].id : null
   description = "CLAWDINATOR instance ID."
 }
 
 output "instance_public_ip" {
-  value       = aws_instance.clawdinator.public_ip
+  value       = local.instance_enabled ? aws_instance.clawdinator[0].public_ip : null
   description = "CLAWDINATOR public IP."
 }
 
 output "instance_public_dns" {
-  value       = aws_instance.clawdinator.public_dns
+  value       = local.instance_enabled ? aws_instance.clawdinator[0].public_dns : null
   description = "CLAWDINATOR public DNS."
 }

@@ -57,8 +57,8 @@ Bootstrap (local):
   - `RULES=../nix/nix-secrets/secrets.nix agenix -d homelab-admin.age -i ~/.ssh/id_ed25519`
 - OpenTofu env:
   - `TF_VAR_aws_region=eu-central-1`
-  - `TF_VAR_ami_id=ami-...`
-  - `TF_VAR_ssh_public_key="$(cat ~/.ssh/id_ed25519.pub)"`
+  - `TF_VAR_ami_id=ami-...` (empty string skips instance creation)
+  - `TF_VAR_ssh_public_key="$(cat ~/.ssh/id_ed25519.pub)"` (required when ami_id is set)
 - Run `tofu init` + `tofu apply` in `infra/opentofu/aws`.
 - After apply, update CI secrets from outputs:
   - `tofu output -raw access_key_id` → `clawdinator-image-uploader-access-key-id.age`

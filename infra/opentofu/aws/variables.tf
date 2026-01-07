@@ -24,6 +24,7 @@ variable "tags" {
 variable "ami_id" {
   description = "AMI ID for CLAWDINATOR instances."
   type        = string
+  default     = ""
 }
 
 variable "instance_name" {
@@ -41,6 +42,11 @@ variable "instance_type" {
 variable "ssh_public_key" {
   description = "SSH public key for the CLAWDINATOR operator."
   type        = string
+  default     = ""
+  validation {
+    condition     = var.ami_id == "" || length(var.ssh_public_key) > 0
+    error_message = "ssh_public_key is required when ami_id is set."
+  }
 }
 
 variable "allowed_cidrs" {
