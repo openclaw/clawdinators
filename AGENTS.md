@@ -66,6 +66,8 @@ Bootstrap (local):
   - `tofu output -raw bucket_name` → `clawdinator-image-bucket-name.age`
   - `tofu output -raw aws_region` → `clawdinator-image-bucket-region.age`
   - Then `gh secret set` for `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_REGION`, `S3_BUCKET`.
+- Get the latest AMI ID:
+  - `aws ec2 describe-images --region eu-central-1 --owners self --filters "Name=tag:clawdinator,Values=true" --query "Images | sort_by(@,&CreationDate)[-1].[ImageId,Name,CreationDate]" --output text`
 
 Key principle: mental notes don’t survive restarts — write it to a file.
 
