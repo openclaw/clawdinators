@@ -38,7 +38,7 @@ The Zen of ~~Python~~ Clawdbot, ~~by~~ shamelessly stolen from Tim Peters:
 
 Deploy flow (automation-first):
 - Use `devenv.nix` for tooling (nixos-generators, awscli2).
-- Build a bootstrap NixOS image with nixos-generators (raw-efi) and upload it to S3.
+- Build a bootstrap NixOS image with nixos-generators (amazon) and upload it to S3.
   - Use `nix/hosts/clawdinator-1-image.nix` for image builds.
 - CI is preferred: `.github/workflows/image-build.yml` runs build → S3 upload → AMI import.
 - Bootstrap S3 bucket + scoped IAM user + VM Import role with `infra/opentofu/aws` (use homelab-admin creds).

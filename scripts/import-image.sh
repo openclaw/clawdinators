@@ -5,7 +5,7 @@ bucket="${S3_BUCKET:?S3_BUCKET required}"
 key="${S3_KEY:?S3_KEY required}"
 region="${AWS_REGION:?AWS_REGION required}"
 
-boot_mode="${AMI_BOOT_MODE:-uefi}"
+boot_mode="legacy-bios"
 arch="${AMI_ARCH:-x86_64}"
 
 timestamp="$(date -u +%Y%m%d%H%M%S)"

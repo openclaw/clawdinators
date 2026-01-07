@@ -46,7 +46,7 @@ Deploy (automation‑first):
 
 Image-based deploy (Option A, recommended):
 1) Build a bootstrap image with nixos-generators:
-   - `nix run github:nix-community/nixos-generators -- -f raw-efi -c nix/hosts/clawdinator-1-image.nix -o dist`
+   - `nix run github:nix-community/nixos-generators -- -f amazon -c nix/hosts/clawdinator-1-image.nix -o dist`
 2) Upload the raw image to S3 (private object).
 3) Import into AWS as an AMI (`aws ec2 import-image`).
 4) Launch hosts from the AMI.
