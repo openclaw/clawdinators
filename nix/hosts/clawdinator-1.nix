@@ -38,12 +38,21 @@
   ];
 
   age.identityPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
-  age.secrets."clawdinator-github-app.pem".file =
-    "/var/lib/clawd/nix-secrets/clawdinator-github-app.pem.age";
-  age.secrets."clawdis-anthropic-api-key".file =
-    "/var/lib/clawd/nix-secrets/clawdis-anthropic-api-key.age";
-  age.secrets."clawdinator-discord-token".file =
-    "/var/lib/clawd/nix-secrets/clawdinator-discord-token.age";
+  age.secrets."clawdinator-github-app.pem" = {
+    file = "/var/lib/clawd/nix-secrets/clawdinator-github-app.pem.age";
+    owner = "clawdinator";
+    group = "clawdinator";
+  };
+  age.secrets."clawdis-anthropic-api-key" = {
+    file = "/var/lib/clawd/nix-secrets/clawdis-anthropic-api-key.age";
+    owner = "clawdinator";
+    group = "clawdinator";
+  };
+  age.secrets."clawdinator-discord-token" = {
+    file = "/var/lib/clawd/nix-secrets/clawdinator-discord-token.age";
+    owner = "clawdinator";
+    group = "clawdinator";
+  };
 
   services.clawdinator = {
     enable = true;
