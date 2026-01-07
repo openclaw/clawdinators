@@ -56,13 +56,8 @@ resource "aws_iam_role_policy" "vmimport" {
   policy = data.aws_iam_policy_document.vmimport.json
 }
 
-resource "aws_iam_user" "ami_importer" {
-  name = "clawdinator-ami-importer"
-  tags = local.tags
-}
-
-resource "aws_iam_access_key" "ami_importer" {
-  user = aws_iam_user.ami_importer.name
+data "aws_iam_user" "ci_user" {
+  user_name = var.ci_user_name
 }
 
 data "aws_iam_policy_document" "ami_importer" {
@@ -107,6 +102,6 @@ data "aws_iam_policy_document" "ami_importer" {
 
 resource "aws_iam_user_policy" "ami_importer" {
   name   = "clawdinator-ami-importer"
-  user   = aws_iam_user.ami_importer.name
+  user   = data.aws_iam_user.ci_user.user_name
   policy = data.aws_iam_policy_document.ami_importer.json
 }

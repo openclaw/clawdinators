@@ -9,7 +9,6 @@ Infrastructure (OpenTofu):
 Image pipeline (CI):
 - `AWS_ACCESS_KEY_ID` / `AWS_SECRET_ACCESS_KEY` / `AWS_REGION` / `S3_BUCKET` (required).
 - `S3_PREFIX` (optional).
-- `VMIMPORT_ROLE` (optional; defaults to `vmimport`).
 
 Local storage:
 - Keep AWS keys encrypted in `../nix/nix-secrets` for local runs if needed.

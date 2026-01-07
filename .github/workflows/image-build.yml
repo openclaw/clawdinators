@@ -47,7 +47,6 @@ jobs:
           AWS_REGION: ${{ secrets.AWS_REGION }}
           S3_BUCKET: ${{ secrets.S3_BUCKET }}
           S3_KEY: ${{ env.S3_KEY }}
-          VMIMPORT_ROLE: ${{ secrets.VMIMPORT_ROLE }}
           AMI_DESCRIPTION: clawdinator-nixos
         run: |
           ami_id="$(scripts/import-image.sh)"

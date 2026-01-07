@@ -5,7 +5,6 @@ bucket="${S3_BUCKET:?S3_BUCKET required}"
 key="${S3_KEY:?S3_KEY required}"
 region="${AWS_REGION:?AWS_REGION required}"
 
-role_name="${VMIMPORT_ROLE:-vmimport}"
 boot_mode="${AMI_BOOT_MODE:-uefi}"
 arch="${AMI_ARCH:-x86_64}"
 
@@ -19,7 +18,7 @@ task_id="$(
     --description "${ami_description}" \
     --boot-mode "${boot_mode}" \
     --architecture "${arch}" \
-    --role-name "${role_name}" \
+    --role-name "vmimport" \
     --disk-containers "Format=raw,UserBucket={S3Bucket=${bucket},S3Key=${key}}" \
     --query 'ImportTaskId' \
     --output text
