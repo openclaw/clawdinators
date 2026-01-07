@@ -1,11 +1,11 @@
 { secrets, ... }:
 {
   age.secrets."clawdinator-github-app.pem".file =
-    "${secrets}/clawdinator-github-app.pem.age";
+    "/var/lib/clawd/nix-secrets/clawdinator-github-app.pem.age";
   age.secrets."clawdis-anthropic-api-key".file =
-    "${secrets}/clawdis-anthropic-api-key.age";
+    "/var/lib/clawd/nix-secrets/clawdis-anthropic-api-key.age";
   age.secrets."clawdinator-discord-token".file =
-    "${secrets}/clawdinator-discord-token.age";
+    "/var/lib/clawd/nix-secrets/clawdinator-discord-token.age";
 
   services.openssh.enable = true;
   networking.firewall.allowedTCPPorts = [ 22 18789 ];

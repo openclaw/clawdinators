@@ -6,6 +6,12 @@ infra/opentofu/*.tfstate.backup
 infra/opentofu/*.tfvars
 infra/opentofu/*.auto.tfvars
 !infra/opentofu/example.tfvars
+infra/opentofu/aws/.terraform/
+infra/opentofu/aws/.tofu/
+infra/opentofu/aws/*.tfstate
+infra/opentofu/aws/*.tfstate.backup
+infra/opentofu/aws/*.tfvars
+infra/opentofu/aws/*.auto.tfvars
 
 # Secrets
 *.env

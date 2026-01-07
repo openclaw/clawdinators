@@ -5,40 +5,16 @@ variable "hcloud_token" {
   default     = null
 }
 
-variable "ssh_key_names" {
-  description = "Hetzner SSH key names to add to the server(s)."
-  type        = list(string)
-  default     = []
-}
-
 variable "ssh_key_name" {
-  description = "Name for a generated SSH key (if ssh_public_key[_path] is set)."
+  description = "Name of the existing Hetzner SSH key to attach."
   type        = string
-  default     = "clawdinator"
+  default     = "clawdinator-deploy"
 }
 
-variable "ssh_public_key" {
-  description = "SSH public key contents to upload to Hetzner."
+variable "name" {
+  description = "Server name."
   type        = string
-  default     = null
-}
-
-variable "ssh_public_key_path" {
-  description = "Path to SSH public key to upload to Hetzner."
-  type        = string
-  default     = null
-}
-
-variable "instance_count" {
-  description = "Number of CLAWDINATOR hosts. POC can be 1."
-  type        = number
-  default     = 1
-}
-
-variable "name_prefix" {
-  description = "Server name prefix (e.g., clawdinator)."
-  type        = string
-  default     = "clawdinator"
+  default     = "clawdinator-1"
 }
 
 variable "server_type" {
@@ -48,19 +24,13 @@ variable "server_type" {
 }
 
 variable "image" {
-  description = "Base image. Prefer nixos after we set it up; ubuntu is fine for bootstrap."
+  description = "Custom Hetzner image name or id (imported via hcloud)."
   type        = string
-  default     = "ubuntu-24.04"
+  default     = "clawdinator-nixos"
 }
 
 variable "location" {
   description = "Hetzner location (e.g., fsn1, nbg1, hel1)."
   type        = string
   default     = "nbg1"
-}
-
-variable "volume_size_gb" {
-  description = "Size of per-host volume for /var/lib/clawd. Set 0 to disable volumes."
-  type        = number
-  default     = 50
 }

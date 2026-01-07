@@ -3,61 +3,44 @@
   imports = [ ../modules/clawdinator.nix ];
 
   networking.hostName = "clawdinator-1";
+  networking.useDHCP = false;
+  networking.useNetworkd = true;
+  systemd.network.enable = true;
+  systemd.network.networks."10-wan" = {
+    matchConfig.Type = "ether";
+    networkConfig.DHCP = "yes";
+  };
   time.timeZone = "UTC";
   system.stateVersion = "26.05";
 
   boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader.grub.enable = false;
+  boot.loader.efi.canTouchEfiVariables = false;
+  boot.loader.efi.efiSysMountPoint = "/boot";
 
-  disko.devices = {
-    disk.main = {
-      type = "disk";
-      device = "/dev/sda";
-      content = {
-        type = "gpt";
-        partitions = {
-          boot = {
-            size = "512M";
-            type = "EF00";
-            content = {
-              type = "filesystem";
-              format = "vfat";
-              mountpoint = "/boot";
-            };
-          };
-          root = {
-            size = "100%";
-            content = {
-              type = "filesystem";
-              format = "ext4";
-              mountpoint = "/";
-            };
-          };
-        };
-      };
-    };
-    disk.clawd = {
-      type = "disk";
-      device = "/dev/disk/by-id/scsi-0HC_Volume_${config.networking.hostName}";
-      content = {
-        type = "filesystem";
-        format = "ext4";
-        mountpoint = "/var/lib/clawd";
-        mountOptions = [ "nofail" "x-systemd.device-timeout=10" ];
-      };
-    };
+  fileSystems."/" = {
+    device = "/dev/disk/by-partlabel/disk-main-root";
+    fsType = "ext4";
   };
+
+  fileSystems."/boot" = {
+    device = "/dev/disk/by-partlabel/disk-main-boot";
+    fsType = "vfat";
+  };
+
+  nix.package = pkgs.nixVersions.stable;
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   services.openssh.enable = true;
   networking.firewall.allowedTCPPorts = [ 22 18789 ];
 
   age.identityPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
   age.secrets."clawdinator-github-app.pem".file =
-    "${secrets}/clawdinator-github-app.pem.age";
+    "/var/lib/clawd/nix-secrets/clawdinator-github-app.pem.age";
   age.secrets."clawdis-anthropic-api-key".file =
-    "${secrets}/clawdis-anthropic-api-key.age";
+    "/var/lib/clawd/nix-secrets/clawdis-anthropic-api-key.age";
   age.secrets."clawdinator-discord-token".file =
-    "${secrets}/clawdinator-discord-token.age";
+    "/var/lib/clawd/nix-secrets/clawdinator-discord-token.age";
 
   services.clawdinator = {
     enable = true;

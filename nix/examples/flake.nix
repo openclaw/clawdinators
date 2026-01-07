@@ -20,7 +20,7 @@
         inherit system;
         specialArgs = { inherit secrets; };
         modules = [
-          ({ pkgs, ... }: { nixpkgs.overlays = [ nix-clawdbot.overlays.default ]; })
+          ({ pkgs, ... }: { nixpkgs.overlays = [ clawdinators.overlays.default ]; })
           agenix.nixosModules.default
           clawdinators.nixosModules.clawdinator
           ./clawdinator-host.nix

@@ -1,7 +1,7 @@
 # POC: CLAWDINATOR-1
 
 Acceptance criteria:
-- One Hetzner host provisioned via OpenTofu.
+- One Hetzner host provisioned via OpenTofu using a custom image.
 - NixOS config applied via Nix (module or flake).
 - CLAWDINATOR-1 connects to Discord #clawdributors-test.
 - GitHub integration is read-only.
@@ -15,7 +15,11 @@ Secrets needed (initially):
 - Hetzner API token.
 
 Secrets wiring:
-- Infra: HCLOUD_TOKEN env var for OpenTofu.
+- Infra: HCLOUD_TOKEN env var for OpenTofu and hcloud CLI.
+ 
+Image pipeline:
+- Build a bootstrap image with nixos-generators (raw-efi) from `nix/hosts/clawdinator-1-image.nix`, compress, upload, import into Hetzner.
+- OpenTofu provisions instances from the imported custom image, then nixos-rebuild applies full config.
 - Runtime: explicit token files via agenix (standard).
 - GitHub token is required. Prefer GitHub App (`services.clawdinator.githubApp.*`) to mint short-lived tokens.
 - Store PEM and tokens in the local secrets repo (see docs/SECRETS.md) and decrypt to `/run/agenix/*`.

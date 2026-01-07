@@ -7,7 +7,7 @@ Operating mode:
 - machines are created by automation (another CLAWDINATOR)
 
 Core pieces:
-- OpenTofu provisions Hetzner hosts (networks, volumes, instances).
+- OpenTofu provisions Hetzner hosts from a prebuilt NixOS image.
 - NixOS modules configure clawdbot + CLAWDINATOR runtime on each host.
 - Shared memory is mounted at a consistent path on all hosts.
 
