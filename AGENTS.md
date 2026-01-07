@@ -13,6 +13,8 @@ Memory references:
 - For ops runbook, read memory/ops.md
 - For Discord context, also read memory/discord.md
 
+Repo rule: no inline scripting languages (Python/Node/etc.) in Nix or shell blocks; put logic in script files and call them.
+
 Deploy flow (automation-first):
 - Provision host with OpenTofu (`infra/opentofu`).
 - Add host SSH key to agenix recipients and rekey secrets.
