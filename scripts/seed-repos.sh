@@ -15,6 +15,7 @@ if [ ! -f "$list_file" ]; then
 fi
 
 mkdir -p "$base_dir"
+export GIT_TERMINAL_PROMPT=0
 
 while IFS=$'\t' read -r name url branch; do
   [ -z "${name:-}" ] && continue
@@ -38,7 +39,24 @@ while IFS=$'\t' read -r name url branch; do
     continue
   fi
 
-  origin_url="$(git -C "$dest" config --get remote.origin.url)"
+  origin_url="$(git -C "$dest" -c safe.directory="$dest" config --get remote.origin.url || true)"
+  if [ -z "$origin_url" ]; then
+    rm -rf "$dest"
+    if [ -n "${auth_header}" ] && [[ "$url" == https://github.com/* ]]; then
+      if [ -n "${branch:-}" ]; then
+        git -c http.extraheader="$auth_header" clone --depth 1 --branch "$branch" "$url" "$dest"
+      else
+        git -c http.extraheader="$auth_header" clone --depth 1 "$url" "$dest"
+      fi
+    else
+      if [ -n "${branch:-}" ]; then
+        git clone --depth 1 --branch "$branch" "$url" "$dest"
+      else
+        git clone --depth 1 "$url" "$dest"
+      fi
+    fi
+    continue
+  fi
   if [ -n "${auth_header}" ] && [[ "$origin_url" == https://github.com/* ]]; then
     git -C "$dest" -c safe.directory="$dest" -c http.extraheader="$auth_header" fetch --all --prune
   else
