@@ -27,7 +27,8 @@ let
     token_dir="$(dirname "$token_env")"
 
     mkdir -p "$token_dir"
-    chmod 0700 "$token_dir"
+    chown root:${cfg.group} "$token_dir"
+    chmod 0750 "$token_dir"
 
     now="$(date +%s)"
     iat="$((now - 60))"
@@ -58,8 +59,10 @@ let
       exit 1
     fi
 
-    umask 077
+    umask 027
     printf 'GITHUB_APP_TOKEN=%s\nGITHUB_TOKEN=%s\nGH_TOKEN=%s\n' "$token" "$token" "$token" > "$token_env"
+    chown root:${cfg.group} "$token_env"
+    chmod 0640 "$token_env"
   '';
 
   defaultPackage =
