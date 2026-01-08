@@ -210,21 +210,8 @@
         "agenix": "agenix",
         "disko": "disko",
         "nix-clawdbot": "nix-clawdbot",
-        "nixpkgs": "nixpkgs_4",
-        "secrets": "secrets"
+        "nixpkgs": "nixpkgs_4"
       }
-    },
-    "secrets": {
-      "flake": false,
-      "locked": {
-        "path": "../nix/nix-secrets",
-        "type": "path"
-      },
-      "original": {
-        "path": "../nix/nix-secrets",
-        "type": "path"
-      },
-      "parent": []
     },
     "systems": {
       "locked": {
