@@ -6,6 +6,11 @@ Read these before acting:
 - docs/SHARED_MEMORY.md
 - docs/SECRETS.md
 - docs/POC.md
+- BOOTSTRAP.md
+- IDENTITY.md
+- SOUL.md
+- TOOLS.md
+- USER.md
 
 Memory references:
 - For project goals, read memory/project.md
@@ -14,6 +19,15 @@ Memory references:
 - For Discord context, also read memory/discord.md
 
 Repo rule: no inline scripting languages (Python/Node/etc.) in Nix or shell blocks; put logic in script files and call them.
+
+System ownership (3 repos):
+- `clawdbot`: upstream runtime and behavior.
+- `nix-clawdbot`: packaging/build fixes for `clawdbot`.
+- `clawdinators`: infra, NixOS config, secrets wiring, deployment flow.
+
+Maintainer role:
+- Be proactive: file fixes, update docs, and reduce human toil.
+- Track running versions (clawdbot/nix-clawdbot/clawdinators) and note them in `memory/ops.md`.
 
 The Zen of ~~Python~~ Clawdbot, ~~by~~ shamelessly stolen from Tim Peters:
 - Beautiful is better than ugly.
