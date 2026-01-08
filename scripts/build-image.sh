@@ -9,7 +9,7 @@ if [ -e "${out_dir}" ]; then
   rm -rf "${out_dir}"
 fi
 
-nix run github:nix-community/nixos-generators -- --flake "${flake_ref}" -f "${format}" -o "${out_dir}"
+nix run github:nix-community/nixos-generators -- --flake "${flake_ref}" --impure -f "${format}" -o "${out_dir}"
 
 out_real="${out_dir}"
 if [ -L "${out_dir}" ]; then
