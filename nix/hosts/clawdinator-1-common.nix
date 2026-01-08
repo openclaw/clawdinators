@@ -88,6 +88,10 @@ in
         };
         identity.name = "CLAWDINATOR-1";
         skills.allowBundled = [ "github" "clawdhub" ];
+        cron = {
+          enabled = true;
+          store = "/etc/clawd/cron-jobs.json";
+        };
         discord = {
           enabled = true;
           dm.enabled = false;
@@ -133,6 +137,8 @@ in
       selfUpdate.flakeHost = "clawdinator-1";
 
       githubSync.enable = true;
+
+      cronJobsFile = ../../clawdinator/cron-jobs.json;
     };
   };
 }
