@@ -239,6 +239,12 @@ in
       description = "Optional path to a clawdbot.json file. Overrides config attr.";
     };
 
+    cronJobsFile = mkOption {
+      type = types.nullOr types.path;
+      default = null;
+      description = "Optional path to a cron jobs JSON file (deployed to /etc/clawd/cron-jobs.json).";
+    };
+
     anthropicApiKeyFile = mkOption {
       type = types.nullOr types.str;
       default = null;
@@ -383,6 +389,10 @@ in
       ];
 
     environment.etc."clawd/clawdbot.json".source = configSource;
+    environment.etc."clawd/cron-jobs.json" = lib.mkIf (cfg.cronJobsFile != null) {
+      source = cfg.cronJobsFile;
+      mode = "0644";
+    };
     environment.etc."clawdinator/bin/memory-read" = {
       source = ../../scripts/memory-read.sh;
       mode = "0755";
