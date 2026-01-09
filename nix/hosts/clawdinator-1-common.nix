@@ -67,11 +67,11 @@ in
           maxConcurrent = 4;
           skipBootstrap = true;
           models = {
-            "openai/gpt-5.2-codex" = { alias = "Codex"; };
+            "openai/gpt-5.2" = { alias = "Codex"; };
             "anthropic/claude-opus-4-5" = { alias = "Opus"; };
           };
           model = {
-            primary = "openai/gpt-5.2-codex";
+            primary = "openai/gpt-5.2";
             fallbacks = [ "anthropic/claude-opus-4-5" ];
           };
         };
@@ -102,7 +102,7 @@ in
         messages.queue = {
           mode = "interrupt";
           byProvider = {
-            discord = "queue";
+            discord = "interrupt";
             telegram = "interrupt";
             whatsapp = "interrupt";
             webchat = "queue";

@@ -70,6 +70,7 @@ Deploy flow (automation-first):
 - Ensure secrets are encrypted to the baked agenix key (see `../nix/nix-secrets/secrets.nix`).
 - Ensure required secrets exist: `clawdinator-github-app.pem`, `clawdinator-discord-token`, `clawdinator-anthropic-api-key`.
 - Update `nix/hosts/<host>.nix` (Discord allowlist, GitHub App installationId, identity name).
+- Discord must use `messages.queue.byProvider.discord = "interrupt"`; `queue` delays replies to heartbeat and makes the bot appear dead.
 - Ensure `/var/lib/clawd/repo` contains this repo (self-update requires it).
 - Verify systemd services: `clawdinator`, `clawdinator-github-app-token`, `clawdinator-self-update`.
 - Commit and push changes; repo is the source of truth.
