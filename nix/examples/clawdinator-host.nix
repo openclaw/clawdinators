@@ -25,7 +25,11 @@
 
     # Raw Moltbot config JSON (schema is upstream). Extend as needed.
     config = {
-      gateway.mode = "server";
+      gateway = {
+        mode = "local";
+        bind = "loopback";
+        auth.token = "<GATEWAY_TOKEN>";
+      };
       agents.defaults.workspace = "/var/lib/clawd/workspace";
       messages.queue.byChannel = {
         discord = "queue";

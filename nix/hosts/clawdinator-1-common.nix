@@ -73,7 +73,13 @@ in
       repoSeeds = repoSeeds;
 
       config = {
-        gateway.mode = "local";
+        gateway = {
+          mode = "local";
+          bind = "loopback";
+          auth = {
+            token = "clawdinator-local";
+          };
+        };
         agents.defaults = {
           workspace = "/var/lib/clawd/workspace";
           maxConcurrent = 4;
