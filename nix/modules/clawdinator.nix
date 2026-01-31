@@ -720,8 +720,14 @@ in
         Type = "oneshot";
         User = "root";
       };
-      path = [ pkgs.openssl pkgs.curl pkgs.jq pkgs.coreutils ];
-      script = "${githubTokenScript}";
+      path = [ pkgs.openssl pkgs.curl pkgs.jq pkgs.coreutils pkgs.systemd ];
+      script = ''
+        ${githubTokenScript}
+        # Restart gateway so it picks up the new token from EnvironmentFile
+        if systemctl is-active --quiet clawdinator.service; then
+          systemctl restart clawdinator.service || true
+        fi
+      '';
     };
 
     systemd.timers.clawdinator-github-app-token = lib.mkIf cfg.githubApp.enable {

@@ -175,7 +175,7 @@ in
         appId = "2607181";
         installationId = "102951645";
         privateKeyFile = "/run/agenix/clawdinator-github-app.pem";
-        schedule = "hourly";
+        schedule = "*:0/45"; # every 45 min — tokens expire after 1h
       };
 
       selfUpdate.enable = true;
