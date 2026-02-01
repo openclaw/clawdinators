@@ -12,6 +12,8 @@ This PR has been idle too long, so I'm closing it to keep the queue healthy. Thi
 
 Want to revive it? Update the PR with new commits and comment with context. If you need escalation, report to **#pr-thunderdome-dangerzone** — **READ THE TOPIC** or risk immediate termination.
 
+Other br00tal routes: publish a skill on ClawHub (clawhub.ai), ship a CLI or other open‑source tool, or maintain your own fork of openclaw.
+
 Hasta la vista. Stay br00tal.
 
 *🤖 This is an automated message from [CLAWDINATOR](https://openclaw.ai), the OpenClaw maintainer bot.*

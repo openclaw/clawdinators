@@ -20,6 +20,8 @@ Situation briefing: OpenClaw receives ~25 PRs every hour. The maintainers cannot
 
 Think your change should ship? Come with me if you want to ship. Report to **#pr-thunderdome-dangerzone** on Discord — **READ THE TOPIC** or risk immediate termination. Give the maintainers a clear briefing — what it fixes, who it helps, why it's br00tal.
 
+Other br00tal routes: publish a skill on ClawHub (clawhub.ai), ship a CLI or other open‑source tool, or maintain your own fork of openclaw. All of those help the community ship.
+
 I'll be back. Stay br00tal.
 
 *🤖 This is an automated message from [CLAWDINATOR](https://openclaw.ai), the OpenClaw maintainer bot.*
@@ -41,6 +43,8 @@ I have scanned your PR. The code has heart. But the queue has no mercy.
 OpenClaw receives ~25 PRs every hour. To keep the maintainers from a total system meltdown, I'm closing PRs that are unlikely to merge in the near term. Hasta la vista, PR — but not hasta la vista, contributor.
 
 Still believe in this change? Come with me if you want to ship. Head to **#pr-thunderdome-dangerzone** on Discord — **READ THE TOPIC** or risk immediate termination. Bring a clear case — the problem, the fix, the impact.
+
+Other br00tal routes: publish a skill on ClawHub (clawhub.ai), ship a CLI or other open‑source tool, or maintain your own fork of openclaw. All of those help the community ship.
 
 Stay br00tal.
 
@@ -64,6 +68,8 @@ But the jungle is thick. OpenClaw receives ~25 PRs every hour, and the maintaine
 
 Want to get your change on the chopper? Report to **#pr-thunderdome-dangerzone** on Discord. **READ THE TOPIC** or risk immediate termination. Give the maintainers a clean briefing — what, why, and who it helps.
 
+Other br00tal routes: publish a skill on ClawHub (clawhub.ai), ship a CLI or other open‑source tool, or maintain your own fork of openclaw. All of those help the community ship.
+
 I'll be back. Stay br00tal.
 
 *🤖 This is an automated message from [CLAWDINATOR](https://openclaw.ai), the OpenClaw maintainer bot.*
@@ -86,6 +92,8 @@ OpenClaw receives ~25 PRs every hour. The current carries many things; not all o
 
 Think it deserves to surface? Come with me if you want to ship. Report to **#pr-thunderdome-dangerzone** on Discord — **READ THE TOPIC** or risk immediate termination. Bring a clear case for the maintainers.
 
+Other br00tal routes: publish a skill on ClawHub (clawhub.ai), ship a CLI or other open‑source tool, or maintain your own fork of openclaw. All of those help the community ship.
+
 The abyss remembers. Stay br00tal.
 
 *🤖 This is an automated message from [CLAWDINATOR](https://openclaw.ai), the OpenClaw maintainer bot.*
@@ -107,6 +115,8 @@ Your PR has been scanned. The effort is br00tal.
 Reality check: OpenClaw receives ~25 PRs every hour. The maintainers are running out of oxygen up here. This PR is unlikely to merge in the near term. Consider that a deprecation.
 
 But hey — if this is real and not a Rekall implant, come with me if you want to ship. Report to **#pr-thunderdome-dangerzone** on Discord — **READ THE TOPIC** or risk immediate termination. Bring the facts — what it fixes, why it matters.
+
+Other br00tal routes: publish a skill on ClawHub (clawhub.ai), ship a CLI or other open‑source tool, or maintain your own fork of openclaw. All of those help the community ship.
 
 See you at the party, Richter. Stay br00tal.
 

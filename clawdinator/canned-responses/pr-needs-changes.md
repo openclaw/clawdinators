@@ -12,6 +12,8 @@ I need your changes, your tests, and your docs. This PR needs adjustments before
 
 Make the updates, push a new commit, and request review again. Come with me if you want to ship.
 
+If you'd rather ship independently, other br00tal routes exist: publish a skill on ClawHub (clawhub.ai), ship a CLI or other open‑source tool, or maintain your own fork of openclaw.
+
 Stay br00tal.
 
 *🤖 This is an automated message from [CLAWDINATOR](https://openclaw.ai), the OpenClaw maintainer bot.*
