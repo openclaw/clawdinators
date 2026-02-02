@@ -40,7 +40,6 @@ jq -n \
   --arg anthropic "$anthropic_key" \
   '{
     openai: { type: "api_key", key: $openai },
-    "openai-codex": { type: "api_key", key: $openai },
     anthropic: { type: "api_key", key: $anthropic }
   }' > "$tmp_file"
 

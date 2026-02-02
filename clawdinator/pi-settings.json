@@ -1,9 +1,9 @@
 {
-  "defaultProvider": "openai-codex",
+  "defaultProvider": "openai",
   "defaultModel": "gpt-5.2-codex",
   "defaultThinkingLevel": "xhigh",
   "enabledModels": [
-    "openai-codex/gpt-5.2-codex",
+    "openai/gpt-5.2-codex",
     "anthropic/claude-opus-4-5"
   ]
 }
