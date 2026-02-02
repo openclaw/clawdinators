@@ -626,12 +626,14 @@ in
         ++ lib.optional cfg.bootstrap.enable "clawdinator-bootstrap.service"
         ++ lib.optional cfg.bootstrap.enable "clawdinator-agenix.service"
         ++ lib.optional cfg.githubApp.enable "clawdinator-github-app-token.service"
-        ++ lib.optional (cfg.repoSeedSnapshotDir != null) "clawdinator-repo-seed.service";
+        ++ lib.optional (cfg.repoSeedSnapshotDir != null) "clawdinator-repo-seed.service"
+        ++ lib.optional (cfg.openaiApiKeyFile != null && cfg.anthropicApiKeyFile != null) "clawdinator-pi-auth.service";
       wants =
         lib.optional cfg.bootstrap.enable "clawdinator-bootstrap.service"
         ++ lib.optional cfg.bootstrap.enable "clawdinator-agenix.service"
         ++ lib.optional cfg.githubApp.enable "clawdinator-github-app-token.service"
-        ++ lib.optional (cfg.repoSeedSnapshotDir != null) "clawdinator-repo-seed.service";
+        ++ lib.optional (cfg.repoSeedSnapshotDir != null) "clawdinator-repo-seed.service"
+        ++ lib.optional (cfg.openaiApiKeyFile != null && cfg.anthropicApiKeyFile != null) "clawdinator-pi-auth.service";
 
       environment = {
         CLAWDBOT_CONFIG_PATH = configPath;
@@ -774,6 +776,26 @@ in
       };
       path = [ pkgs.openssl pkgs.curl pkgs.jq pkgs.coreutils pkgs.gh ];
       script = "${githubTokenScript}";
+    };
+
+    systemd.services.clawdinator-pi-auth = lib.mkIf (cfg.openaiApiKeyFile != null && cfg.anthropicApiKeyFile != null) {
+      description = "CLAWDINATOR Pi auth.json seed";
+      wantedBy = [ "multi-user.target" ];
+      after = [ "clawdinator-agenix.service" ];
+      wants = [ "clawdinator-agenix.service" ];
+      serviceConfig = {
+        Type = "oneshot";
+        User = cfg.user;
+        Group = cfg.group;
+        ExecStart =
+          let
+            outputPath = "${cfg.stateDir}/.pi/agent/auth.json";
+            openaiKey = cfg.openaiApiKeyFile;
+            anthropicKey = cfg.anthropicApiKeyFile;
+          in
+          "${pkgs.bash}/bin/bash ${../../scripts/pi-auth.sh} ${lib.escapeShellArg outputPath} ${lib.escapeShellArg openaiKey} ${lib.escapeShellArg anthropicKey}";
+      };
+      path = [ pkgs.coreutils pkgs.jq ];
     };
 
     systemd.timers.clawdinator-github-app-token = lib.mkIf cfg.githubApp.enable {
