@@ -16,6 +16,7 @@ Local storage:
 
 Runtime (CLAWDINATOR):
 - Discord bot token (required, per instance).
+- Telegram bot token (required if Telegram channel is enabled).
 - GitHub token (required): GitHub App installation token (preferred) or a read-only PAT.
 - Anthropic API key (required for Claude models).
 - OpenAI API key (required for OpenAI models).
@@ -25,6 +26,12 @@ Explicit token files (standard):
 - `services.clawdinator.anthropicApiKeyFile`
 - `services.clawdinator.openaiApiKeyFile`
 - `services.clawdinator.githubPatFile` (PAT path, if not using GitHub App; exports `GITHUB_TOKEN` + `GH_TOKEN`)
+- `services.clawdinator.telegramAllowFromFile` (optional; exports `CLAWDINATOR_TELEGRAM_ALLOW_FROM`)
+
+Telegram token wiring (OpenClaw config):
+- `services.clawdinator.config.channels.telegram.tokenFile` (preferred)
+- or `TELEGRAM_BOT_TOKEN` environment variable
+- `channels.telegram.allowFrom` can reference `\${CLAWDINATOR_TELEGRAM_ALLOW_FROM}` when exported via `services.clawdinator.telegramAllowFromFile`
 
 GitHub App (preferred):
 - Private key PEM decrypted to `/run/agenix/clawdinator-github-app.pem`.
@@ -38,6 +45,8 @@ Agenix (local secrets repo):
 - Decrypt on host with agenix; point NixOS options at `/run/agenix/*`.
 - Image builds do **not** bake the agenix identity; the age key is injected at runtime via the bootstrap bundle.
 - Required files (minimum): `clawdinator-github-app.pem.age`, `clawdinator-discord-token.age`, `clawdinator-anthropic-api-key.age`.
+- Required for Telegram: `clawdinator-telegram-bot-token.age` (when Telegram is enabled).
+- Telegram allowlist (if using allowFrom secrets): `clawdinator-telegram-allow-from.age`.
 - Also required for OpenAI: `clawdinator-openai-api-key-peter-2.age`.
 - CI image pipeline (stored locally, not on hosts): `clawdinator-image-uploader-access-key-id.age`, `clawdinator-image-uploader-secret-access-key.age`, `clawdinator-image-bucket-name.age`, `clawdinator-image-bucket-region.age`.
 
@@ -62,6 +71,10 @@ Example NixOS wiring (agenix):
     "/var/lib/clawd/nix-secrets/clawdinator-openai-api-key-peter-2.age";
   age.secrets."clawdinator-discord-token".file =
     "/var/lib/clawd/nix-secrets/clawdinator-discord-token.age";
+  age.secrets."clawdinator-telegram-bot-token".file =
+    "/var/lib/clawd/nix-secrets/clawdinator-telegram-bot-token.age";
+  age.secrets."clawdinator-telegram-allow-from".file =
+    "/var/lib/clawd/nix-secrets/clawdinator-telegram-allow-from.age";
 
   services.clawdinator.githubApp.privateKeyFile =
     "/run/agenix/clawdinator-github-app.pem";
@@ -71,5 +84,15 @@ Example NixOS wiring (agenix):
     "/run/agenix/clawdinator-openai-api-key-peter-2";
   services.clawdinator.discordTokenFile =
     "/run/agenix/clawdinator-discord-token";
+  services.clawdinator.telegramAllowFromFile =
+    "/run/agenix/clawdinator-telegram-allow-from";
+
+  services.clawdinator.config.channels.telegram = {
+    enabled = true;
+    dmPolicy = "allowlist";
+    allowFrom = [ "\${CLAWDINATOR_TELEGRAM_ALLOW_FROM}" ];
+    groupPolicy = "disabled";
+    tokenFile = "/run/agenix/clawdinator-telegram-bot-token";
+  };
 }
 ```

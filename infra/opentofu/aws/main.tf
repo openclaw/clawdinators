@@ -247,16 +247,6 @@ resource "aws_security_group_rule" "ssh_ingress" {
   cidr_blocks       = var.allowed_cidrs
 }
 
-resource "aws_security_group_rule" "gateway_ingress" {
-  count             = local.instance_enabled ? 1 : 0
-  type              = "ingress"
-  security_group_id = aws_security_group.clawdinator[0].id
-  from_port         = 18789
-  to_port           = 18789
-  protocol          = "tcp"
-  cidr_blocks       = var.allowed_cidrs
-}
-
 resource "aws_security_group_rule" "egress" {
   count             = local.instance_enabled ? 1 : 0
   type              = "egress"

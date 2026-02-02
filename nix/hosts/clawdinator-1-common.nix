@@ -51,6 +51,16 @@ in
       owner = "clawdinator";
       group = "clawdinator";
     };
+    age.secrets."clawdinator-telegram-bot-token" = {
+      file = "${secretsPath}/clawdinator-telegram-bot-token.age";
+      owner = "clawdinator";
+      group = "clawdinator";
+    };
+    age.secrets."clawdinator-telegram-allow-from" = {
+      file = "${secretsPath}/clawdinator-telegram-allow-from.age";
+      owner = "clawdinator";
+      group = "clawdinator";
+    };
 
     services.clawdinator = {
       enable = true;
@@ -131,6 +141,7 @@ in
         plugins = {
           slots.memory = "none";
           entries.discord.enabled = true;
+          entries.telegram.enabled = true;
         };
         skills.allowBundled = [ "github" "clawdhub" "coding-agent" ];
         cron = {
@@ -165,12 +176,20 @@ in
               };
             };
           };
+          telegram = {
+            enabled = true;
+            dmPolicy = "allowlist";
+            allowFrom = [ "\${CLAWDINATOR_TELEGRAM_ALLOW_FROM}" ];
+            groupPolicy = "disabled";
+            tokenFile = "/run/agenix/clawdinator-telegram-bot-token";
+          };
         };
       };
 
       anthropicApiKeyFile = "/run/agenix/clawdinator-anthropic-api-key";
       openaiApiKeyFile = "/run/agenix/clawdinator-openai-api-key-peter-2";
       discordTokenFile = "/run/agenix/clawdinator-discord-token";
+      telegramAllowFromFile = "/run/agenix/clawdinator-telegram-allow-from";
 
       githubApp = {
         enable = true;

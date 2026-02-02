@@ -8,9 +8,13 @@
     "/var/lib/clawd/nix-secrets/clawdinator-openai-api-key-peter-2.age";
   age.secrets."clawdinator-discord-token".file =
     "/var/lib/clawd/nix-secrets/clawdinator-discord-token.age";
+  age.secrets."clawdinator-telegram-bot-token".file =
+    "/var/lib/clawd/nix-secrets/clawdinator-telegram-bot-token.age";
+  age.secrets."clawdinator-telegram-allow-from".file =
+    "/var/lib/clawd/nix-secrets/clawdinator-telegram-allow-from.age";
 
   services.openssh.enable = true;
-  networking.firewall.allowedTCPPorts = [ 22 18789 ];
+  networking.firewall.allowedTCPPorts = [ 22 ];
 
   services.clawdinator = {
     enable = true;
@@ -38,6 +42,7 @@
       };
       plugins.slots.memory = "none";
       plugins.entries.discord.enabled = true;
+      plugins.entries.telegram.enabled = true;
       agents.list = [
         {
           id = "main";
@@ -59,12 +64,20 @@
             };
           };
         };
+        telegram = {
+          enabled = true;
+          dmPolicy = "allowlist";
+          allowFrom = [ "\${CLAWDINATOR_TELEGRAM_ALLOW_FROM}" ];
+          groupPolicy = "disabled";
+          tokenFile = "/run/agenix/clawdinator-telegram-bot-token";
+        };
       };
     };
 
     anthropicApiKeyFile = "/run/agenix/clawdinator-anthropic-api-key";
     openaiApiKeyFile = "/run/agenix/clawdinator-openai-api-key-peter-2";
     discordTokenFile = "/run/agenix/clawdinator-discord-token";
+    telegramAllowFromFile = "/run/agenix/clawdinator-telegram-allow-from";
 
     githubApp = {
       enable = true;

@@ -115,7 +115,7 @@ let
     toolchain.docs;
 
   tokenWrapper =
-    if cfg.anthropicApiKeyFile != null || cfg.discordTokenFile != null || cfg.githubPatFile != null || cfg.openaiApiKeyFile != null then
+    if cfg.anthropicApiKeyFile != null || cfg.discordTokenFile != null || cfg.githubPatFile != null || cfg.openaiApiKeyFile != null || cfg.telegramAllowFromFile != null then
       pkgs.writeShellScriptBin "clawdinator-gateway" ''
         set -euo pipefail
 
@@ -144,6 +144,7 @@ let
         ${lib.optionalString (cfg.discordTokenFile != null) "read_token DISCORD_BOT_TOKEN \"${cfg.discordTokenFile}\""}
         ${lib.optionalString (cfg.githubPatFile != null) "read_token \"GITHUB_TOKEN GH_TOKEN\" \"${cfg.githubPatFile}\""}
         ${lib.optionalString (cfg.openaiApiKeyFile != null) "read_token \"OPENAI_API_KEY OPEN_AI_APIKEY\" \"${cfg.openaiApiKeyFile}\""}
+        ${lib.optionalString (cfg.telegramAllowFromFile != null) "read_token CLAWDINATOR_TELEGRAM_ALLOW_FROM \"${cfg.telegramAllowFromFile}\""}
 
         exec "${gatewayBin}" gateway --port ${toString cfg.gatewayPort}
       ''
@@ -340,6 +341,12 @@ in
       type = types.nullOr types.str;
       default = null;
       description = "Path to file containing Discord bot token (plain text).";
+    };
+
+    telegramAllowFromFile = mkOption {
+      type = types.nullOr types.str;
+      default = null;
+      description = "Path to file containing Telegram allowFrom entry (plain text).";
     };
 
     githubPatFile = mkOption {
