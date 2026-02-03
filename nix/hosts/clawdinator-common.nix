@@ -153,6 +153,9 @@ in
             }
           ];
         };
+        messages.groupChat = {
+          mentionPatterns = [];
+        };
         messages.queue = {
           mode = "interrupt";
           byChannel = {
