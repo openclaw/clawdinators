@@ -46,3 +46,6 @@ Update with incidents, fixes, and operational lessons.
 - Redeployed babelfish to trim forum context output:
   - Instance: i-09dfb9a32728a2ec9 (IP 3.124.183.184, DNS ec2-3-124-183-184.eu-central-1.compute.amazonaws.com).
   - AMI: ami-004e1c2ade3e2b9e6.
+- Redeployed babelfish to disable thread starter injection:
+  - Instance: i-0174135dce4039101 (IP 3.122.248.167, DNS ec2-3-122-248-167.eu-central-1.compute.amazonaws.com).
+  - AMI: ami-004e1c2ade3e2b9e6.
