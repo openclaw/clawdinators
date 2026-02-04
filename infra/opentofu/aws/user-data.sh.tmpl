@@ -23,21 +23,23 @@ wait_for_service() {
   local state
   local result
   local start_ts
+  local previous_start_ts
 
   if [ "$#" -ge 2 ]; then
     timeout="$2"
   fi
 
-  systemctl start "$service"
+  previous_start_ts="$(systemctl show -p ExecMainStartTimestampMonotonic --value "$service")"
+  systemctl restart "$service"
   while true; do
     state="$(systemctl show -p ActiveState --value "$service")"
     result="$(systemctl show -p Result --value "$service")"
     start_ts="$(systemctl show -p ExecMainStartTimestampMonotonic --value "$service")"
 
-    if [ "$state" = "active" ]; then
+    if [ "$state" = "active" ] && [ "$start_ts" != "$previous_start_ts" ]; then
       return 0
     fi
-    if [ "$state" = "inactive" ] && [ "$result" = "success" ] && [ "$start_ts" != "0" ]; then
+    if [ "$state" = "inactive" ] && [ "$result" = "success" ] && [ "$start_ts" != "0" ] && [ "$start_ts" != "$previous_start_ts" ]; then
       return 0
     fi
     if [ "$state" = "failed" ] || [ "$result" = "exit-code" ] || [ "$result" = "timeout" ] || [ "$result" = "failed" ]; then
