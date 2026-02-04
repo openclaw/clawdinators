@@ -22,7 +22,7 @@
   networking.firewall.allowedTCPPorts = [ 22 ];
 
   services.clawdinator = {
-    githubApp.enable = lib.mkForce false;
+    githubApp.enable = lib.mkForce true;
     githubSync.enable = lib.mkForce false;
     cronJobsFile = lib.mkForce null;
 
