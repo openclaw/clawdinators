@@ -15,4 +15,4 @@ Active IDs:
   - 1458141495701012561 (#clawdributors, lurk-only; replies denied)
 - BABELFISH channels:
   - 1467469670192910387 (#help-中文, translation-only; no mentions required)
-  - 1468983176620675132 (translation-only; no mentions required)
+  - 1468983176620675132 (#tech-中国, translation-only; no mentions required)
