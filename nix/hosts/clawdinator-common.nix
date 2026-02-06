@@ -121,12 +121,12 @@ in
           maxConcurrent = 4;
           skipBootstrap = true;
           models = {
-            "anthropic/claude-opus-4-5-20251101" = { alias = "Opus"; };
+            "anthropic/claude-opus-4-6" = { alias = "Opus"; };
             "openai/gpt-5.2-codex" = { alias = "Codex"; };
           };
           model = {
             primary = "openai/gpt-5.2-codex";
-            fallbacks = [ "anthropic/claude-opus-4-5-20251101" ];
+            fallbacks = [ "anthropic/claude-opus-4-6" ];
           };
         };
         agents.list = [
