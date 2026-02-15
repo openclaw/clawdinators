@@ -12,11 +12,13 @@ shift
 # Join remaining args into a single shell command.
 cmd="$*"
 
+params_json="$(jq -cn --arg c "${cmd}" '{commands: [$c]}')"
+
 command_id="$(aws ssm send-command \
   --instance-ids "${instance_id}" \
   --document-name "AWS-RunShellScript" \
   --comment "clawdinators deploy" \
-  --parameters commands="${cmd}" \
+  --parameters "${params_json}" \
   --query 'Command.CommandId' \
   --output text)"
 
