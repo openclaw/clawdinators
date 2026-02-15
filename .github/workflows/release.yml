@@ -32,6 +32,10 @@ jobs:
             extra-substituters = https://cache.garnix.io
             extra-trusted-public-keys = cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g=
 
+      - name: Shell lint (inline)
+        run: |
+          nix shell nixpkgs#shellcheck nixpkgs#shfmt -c bash scripts/lint-shell.sh
+
       - name: Evaluate host configs (fail fast)
         run: |
           nix eval --raw .#nixosConfigurations.clawdinator-1.config.system.build.toplevel.drvPath --accept-flake-config >/dev/null
