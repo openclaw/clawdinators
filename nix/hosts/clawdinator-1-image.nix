@@ -10,6 +10,9 @@
   time.timeZone = "UTC";
   system.stateVersion = "26.05";
 
+  clawdinator.bootstrapPrefix = "bootstrap/clawdinator-1";
+  clawdinator.discordTokenSecret = "clawdinator-discord-token-1";
+
   boot.initrd.availableKernelModules = [ "nvme" ];
   boot.initrd.kernelModules = [ "xen-blkfront" ];
   boot.extraModulePackages = [ config.boot.kernelPackages.ena ];
