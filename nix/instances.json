@@ -1,8 +1,1 @@
-{
-  "clawdinator-babelfish": {
-    "host": "clawdinator-babelfish",
-    "instanceType": "t3.small",
-    "bootstrapPrefix": "bootstrap/clawdinator-babelfish",
-    "discordTokenSecret": "clawdinator-discord-token-babelfish"
-  }
-}
+{}

@@ -36,7 +36,7 @@ variable "tags" {
 variable "manage_instances" {
   description = "Whether to manage (create/update/destroy) the CLAWDINATOR EC2 instances and related networking resources."
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "ami_id" {

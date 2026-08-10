@@ -1,5 +1,9 @@
 # clawdinators
 
+> **Status: retired.** The AWS fleet was decommissioned in August 2026. All
+> deployment workflows are disabled and the authoritative fleet registry is
+> empty. This repository remains as the historical reference implementation.
+
 <p align="center">
   <img src="assets/clawdinator.jpg" alt="CLAWDINATOR - Cybernetic crustacean organism, living tissue over metal endoskeleton" width="600">
 </p>
