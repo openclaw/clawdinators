@@ -1,0 +1,21 @@
+name: Shell checks
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  shell-checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install shell tools
+        run: sudo apt-get update && sudo apt-get install -y shellcheck shfmt jq
+      - name: Lint shell scripts
+        run: bash scripts/lint-shell.sh
+      - name: Test AMI retention with a synthetic AWS CLI
+        run: bash scripts/tests/prune-clawdinator-ami-history.sh

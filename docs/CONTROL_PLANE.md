@@ -120,6 +120,14 @@ Example:
 - Use latest AMI tagged `clawdinator=true`.
 - Optional override via workflow input `ami_override` for rollback.
 - Automatic retention keeps the newest few tagged AMIs plus any AMI still backing a live CLAWDINATOR instance.
+- Retention aborts before deleting images or snapshots if the live-instance lookup or image-list parsing fails; a failed lookup must not be treated as an empty fleet.
+
+Run the retention regression checks without AWS credentials or network access:
+
+```bash
+bash scripts/lint-shell.sh
+bash scripts/tests/prune-clawdinator-ami-history.sh
+```
 
 ## Deploy Execution (Workflow)
 - Single workflow `fleet-deploy.yml`.
