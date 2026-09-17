@@ -95,10 +95,10 @@ let
     then pkgs.openclaw-gateway
     else pkgs.openclaw;
 
-  gatewayBin =
-    if builtins.pathExists "${cfg.package}/bin/openclaw"
-    then "${cfg.package}/bin/openclaw"
-    else "${cfg.package}/bin/moltbot";
+  # Do not use pathExists here. Eval does not realize cfg.package, so
+  # ${cfg.package}/bin/openclaw is missing and the old moltbot fallback
+  # would exec a binary the locked nix-openclaw package does not install.
+  gatewayBin = lib.getExe cfg.package;
 
   configPath = "/etc/clawd/openclaw.json";
   workspaceDir = "${cfg.stateDir}/workspace";
