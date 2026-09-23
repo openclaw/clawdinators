@@ -27,3 +27,11 @@ Secrets:
 Updates:
 - Tracks `github:openclaw/nix-openclaw` (latest upstream)
 - Self-update timer available via `services.clawdinator.selfUpdate.*`
+
+Build the bundled Pi package independently of the retired fleet:
+
+```bash
+package_path="$(nix-build nix/tests/pi-package.nix --no-out-link)"
+"$package_path/bin/pi" --version
+"$package_path/bin/pi" --help
+```

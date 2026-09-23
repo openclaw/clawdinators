@@ -1,0 +1,38 @@
+name: Dependency checks
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: infra/opentofu/aws
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: opentofu/setup-opentofu@a1320f892987e89d278cc92dc5adc984fb93aca4 # v2.0.2
+        with:
+          tofu_version: 1.12.6
+          tofu_wrapper: false
+      - name: Initialize providers without the state backend
+        run: tofu init -backend=false -lockfile=readonly
+      - name: Validate infrastructure configuration
+        run: tofu validate
+
+  pi-package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Install Nix
+        run: sudo apt-get update && sudo apt-get install -y nix-bin
+      - name: Build and exercise the bundled Pi executable
+        run: |
+          package_path="$(sudo nix-build nix/tests/pi-package.nix --no-out-link)"
+          "$package_path/bin/pi" --version
+          "$package_path/bin/pi" --help > /dev/null
