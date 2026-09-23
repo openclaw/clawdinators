@@ -14,10 +14,12 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - name: Install shell tools
-        run: sudo apt-get update && sudo apt-get install -y shellcheck shfmt jq awscli
+        run: sudo apt-get update && sudo apt-get install -y shellcheck shfmt jq
       - name: Lint shell scripts
         run: bash scripts/lint-shell.sh
       - name: Test AMI retention with a synthetic AWS CLI
         run: bash scripts/tests/prune-clawdinator-ami-history.sh
       - name: Test AMI retention with the AWS client and a local EC2 endpoint
-        run: python3 scripts/tests/prune-ec2-client.py
+        run: |
+          aws --version
+          python3 scripts/tests/prune-ec2-client.py
