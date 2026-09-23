@@ -1,11 +1,11 @@
 { pkgs }:
 pkgs.buildNpmPackage {
   pname = "pi-coding-agent";
-  version = "0.52.6";
+  version = "0.52.12";
 
   src = pkgs.fetchurl {
-    url = "https://registry.npmjs.org/@mariozechner/pi-coding-agent/-/pi-coding-agent-0.52.6.tgz";
-    hash = "sha256-CXKWlAxjXSwSJI+DVzgLu1A04w+QQzE6yBXBO/j/za4=";
+    url = "https://registry.npmjs.org/@mariozechner/pi-coding-agent/-/pi-coding-agent-0.52.12.tgz";
+    hash = "sha256-xioju9FJfRsSmL1pWQyRU29i9nGtnYIa2HZ/uR4+hmY=";
   };
 
   postPatch = ''
@@ -13,6 +13,6 @@ pkgs.buildNpmPackage {
   '';
 
   # Update via `nix build` on hash mismatch
-  npmDepsHash = "sha256-zD87h87FILBSKCygRLV0jZxLjgU5YnM765FISjFDpas=";
+  npmDepsHash = "sha256-lwIK+JjQKbep36j/7mypm99Vv18tWspqn/DZKg5LKCI=";
   dontNpmBuild = true;
 }
