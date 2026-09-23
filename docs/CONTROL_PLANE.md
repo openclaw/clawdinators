@@ -1,5 +1,7 @@
 # Control Plane
 
+> Historical reference: the fleet is retired and deployment workflows remain disabled.
+
 Goal: manage CLAWDINATOR host lifecycle (create/recreate/replace) from **CLAWDINATOR chat** (Telegram/Discord) using an out‑of‑band control API. CLAWDINATOR agents can edit IaC, but **deploys run OOB** with no AWS creds inside agents.
 
 ## Goals
@@ -52,6 +54,14 @@ Goal: manage CLAWDINATOR host lifecycle (create/recreate/replace) from **CLAWDIN
 - `GITHUB_REPO` (default `openclaw/clawdinators`)
 - `GITHUB_WORKFLOW` (default `fleet-deploy.yml`)
 - `GITHUB_REF` (default `main`)
+
+Requests must contain an object payload with string `action` and `target` fields. Optional `caller` and `ami_override` values must also be strings when provided. Malformed payloads return HTTP 400; missing or incorrect authentication returns HTTP 401.
+
+Run the control API regression tests without credentials or network access:
+
+```bash
+node --test control/api/handler.test.js
+```
 
 ## Desired State (Fleet Registry)
 `nix/instances.json` is the fleet map (single source of truth for infra + host configs).
