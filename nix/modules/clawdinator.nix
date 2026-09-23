@@ -95,9 +95,6 @@ let
     then pkgs.openclaw-gateway
     else pkgs.openclaw;
 
-  # Do not use pathExists here. Eval does not realize cfg.package, so
-  # ${cfg.package}/bin/openclaw is missing and the old moltbot fallback
-  # would exec a binary the locked nix-openclaw package does not install.
   gatewayBin = lib.getExe cfg.package;
 
   configPath = "/etc/clawd/openclaw.json";
