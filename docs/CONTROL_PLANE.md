@@ -127,7 +127,10 @@ Run the retention regression checks without AWS credentials or network access:
 ```bash
 bash scripts/lint-shell.sh
 bash scripts/tests/prune-clawdinator-ami-history.sh
+python3 scripts/tests/prune-ec2-client.py
 ```
+
+The client integration test requires the AWS CLI and uses a local EC2 endpoint with synthetic credentials and inventories; it never contacts AWS.
 
 ## Deploy Execution (Workflow)
 - Single workflow `fleet-deploy.yml`.
