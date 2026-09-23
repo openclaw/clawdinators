@@ -18,6 +18,16 @@ Module:
 - Example host config: `nix/examples/clawdinator-host.nix`
 - Example flake wiring: `nix/examples/flake.nix`
 
+Gateway packages use `meta.mainProgram` to select their executable. Selection does not probe or realize the package during evaluation.
+
+Test both direct startup and the token-loading wrapper with the locked nixpkgs and synthetic gateway packages:
+
+```bash
+nix-build nix/tests/gateway-executable.nix --option allow-import-from-derivation false --no-out-link
+```
+
+This checks argument and token forwarding, including a custom executable name, without deploying a host or contacting a provider.
+
 Hosts:
 - `nix/hosts/clawdinator-1.nix` is the first host config (templated; no machine-specific secrets)
 

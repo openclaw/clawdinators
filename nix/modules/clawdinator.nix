@@ -95,10 +95,7 @@ let
     then pkgs.openclaw-gateway
     else pkgs.openclaw;
 
-  gatewayBin =
-    if builtins.pathExists "${cfg.package}/bin/openclaw"
-    then "${cfg.package}/bin/openclaw"
-    else "${cfg.package}/bin/moltbot";
+  gatewayBin = lib.getExe cfg.package;
 
   configPath = "/etc/clawd/openclaw.json";
   workspaceDir = "${cfg.stateDir}/workspace";
