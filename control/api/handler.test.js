@@ -27,7 +27,8 @@ test('rejects malformed input without dispatching or throwing', async (t) => {
 
   for (const body of [null, [], 42, 'deploy', { ...payload, action: 42 },
     { ...payload, action: {} }, { ...payload, target: {} },
-    { ...payload, caller: [] }, { ...payload, ami_override: {} }]) {
+    { ...payload, caller: [] }, { ...payload, ami_override: {} },
+    { ...payload, caller: null }, { ...payload, ami_override: null }]) {
     const response = await handler(request(body));
     assert.equal(response.statusCode, 400, JSON.stringify(body));
     assert.equal(JSON.parse(response.body).ok, false);

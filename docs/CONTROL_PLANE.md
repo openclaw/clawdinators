@@ -63,6 +63,8 @@ Run the control API regression tests without credentials or network access:
 node --test control/api/handler.test.js
 ```
 
+For runtime integration proof, run `node control/api/test-runtime.js` with Docker and OpenSSL installed. This invokes the unmodified handler through the AWS Node.js 20 Lambda image's Runtime Interface Emulator. The container has no external network; a loopback HTTPS fixture records dispatch requests using synthetic credentials. Malformed/authentication/self-deploy requests must make zero dispatches, while valid direct, JSON, and base64 requests must send the exact workflow inputs. Docker downloads the runtime image if it is not cached. No AWS resources or real GitHub workflows are used.
+
 ## Desired State (Fleet Registry)
 `nix/instances.json` is the fleet map (single source of truth for infra + host configs).
 
