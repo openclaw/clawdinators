@@ -2,4 +2,4 @@
 
 ## Unreleased
 
-- Update the bundled Pi coding agent from 0.52.6 to 0.52.12.
+- Update the AWS, archive, and random OpenTofu providers within their current major versions, with validation-only CI.
