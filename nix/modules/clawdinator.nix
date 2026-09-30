@@ -95,7 +95,16 @@ let
     then pkgs.openclaw-gateway
     else pkgs.openclaw;
 
-  gatewayBin = lib.getExe cfg.package;
+  gatewayBin =
+    if (cfg.package.meta.mainProgram or null) != null then lib.getExe cfg.package
+    else pkgs.writeShellScript "clawdinator-gateway-executable" ''
+      # Preserve metadata-free packages without realizing them during evaluation.
+      if [ -e "${cfg.package}/bin/openclaw" ]; then
+        exec "${cfg.package}/bin/openclaw" "$@"
+      else
+        exec "${cfg.package}/bin/moltbot" "$@"
+      fi
+    '';
 
   configPath = "/etc/clawd/openclaw.json";
   workspaceDir = "${cfg.stateDir}/workspace";

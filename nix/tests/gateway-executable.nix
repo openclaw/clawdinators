@@ -7,17 +7,32 @@ let
   }) {};
   inherit (pkgs) lib;
 
-  gateway = program: (pkgs.writeShellScriptBin program ''
+  gateway = program: metadata: (pkgs.writeShellScriptBin program ''
     set -eu
     test "$#" -eq 3
     test "$1" = gateway
     test "$2" = --port
     test "$3" = 19234
+    test "${program}" = "$EXPECTED_PROGRAM"
     test "''${DISCORD_BOT_TOKEN:-}" = "''${EXPECTED_TOKEN:-}"
   '').overrideAttrs (_: {
     name = "gateway-fixture-${program}";
-    meta.mainProgram = program;
+    meta = lib.optionalAttrs metadata { mainProgram = program; };
   });
+
+  fixtures = [
+    { package = gateway "openclaw" true; program = "openclaw"; }
+    { package = gateway "custom-gateway" true; program = "custom-gateway"; }
+    { package = gateway "openclaw" false; program = "openclaw"; }
+    { package = gateway "moltbot" false; program = "moltbot"; }
+    {
+      package = pkgs.symlinkJoin {
+        name = "gateway-with-both-executables";
+        paths = [ (gateway "openclaw" false) (gateway "moltbot" false) ];
+      };
+      program = "openclaw";
+    }
+  ];
 
   command = package: tokenFile:
     (import "${pkgs.path}/nixos/lib/eval-config.nix" {
@@ -42,11 +57,11 @@ let
   token = pkgs.writeText "gateway-test-token" "synthetic-test-token\n";
 in
 pkgs.runCommand "clawdinator-gateway-executable-test" {} (
-  lib.concatMapStringsSep "\n" (program: ''
-    ${command (gateway program) null}
-    EXPECTED_TOKEN=synthetic-test-token ${command (gateway program) "${token}"}
-    echo "PASS: ${program}, direct and token wrapper"
-  '') [ "openclaw" "custom-gateway" ]
+  lib.concatMapStringsSep "\n" (fixture: ''
+    EXPECTED_PROGRAM=${fixture.program} ${command fixture.package null}
+    EXPECTED_PROGRAM=${fixture.program} EXPECTED_TOKEN=synthetic-test-token ${command fixture.package "${token}"}
+    echo "PASS: ${fixture.package.name}, direct and token wrapper"
+  '') fixtures
   + ''
     touch "$out"
   ''
