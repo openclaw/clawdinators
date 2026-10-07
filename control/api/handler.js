@@ -84,8 +84,8 @@ exports.handler = async (event) => {
 
   const action = payload.action.toLowerCase();
   const target = payload.target;
-  const caller = payload.caller;
-  const amiOverride = payload.ami_override === undefined ? '' : payload.ami_override;
+  const caller = payload.caller ?? '';
+  const amiOverride = payload.ami_override ?? '';
   const controlToken = payload.control_token || null;
 
   if (CONTROL_API_TOKEN && controlToken !== CONTROL_API_TOKEN) {
@@ -103,7 +103,7 @@ exports.handler = async (event) => {
   if (typeof target !== 'string' || !target) {
     return badRequest('target required');
   }
-  if (caller !== undefined && typeof caller !== 'string') {
+  if (typeof caller !== 'string') {
     return badRequest('caller must be a string');
   }
   if (typeof amiOverride !== 'string') {

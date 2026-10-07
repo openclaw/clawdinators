@@ -28,7 +28,8 @@ test('rejects malformed input without dispatching or throwing', async (t) => {
   for (const body of [null, [], 42, 'deploy', { ...payload, action: 42 },
     { ...payload, action: {} }, { ...payload, target: {} },
     { ...payload, caller: [] }, { ...payload, ami_override: {} },
-    { ...payload, caller: null }, { ...payload, ami_override: null }]) {
+    { ...payload, caller: false }, { ...payload, caller: 0 },
+    { ...payload, ami_override: false }, { ...payload, ami_override: 0 }]) {
     const response = await handler(request(body));
     assert.equal(response.statusCode, 400, JSON.stringify(body));
     assert.equal(JSON.parse(response.body).ok, false);
@@ -61,6 +62,29 @@ test('dispatches valid direct, JSON and base64 events once', async (t) => {
     assert.equal((await handler(event)).statusCode, 200);
   }
   assert.equal(fetch.mock.callCount(), 3);
+  for (const call of fetch.mock.calls) {
+    assert.deepEqual(JSON.parse(call.arguments[1].body).inputs, {
+      target: payload.target,
+      ami_override: '',
+    });
+  }
+});
+
+test('preserves optional null defaults across event formats', async (t) => {
+  const fetch = t.mock.method(globalThis, 'fetch', async () => ({ ok: true }));
+  for (const optional of [{ caller: null }, { ami_override: null },
+    { caller: null, ami_override: null }]) {
+    const body = { ...payload, ...optional };
+    const jsonEvent = request(body);
+    for (const event of [jsonEvent, {
+      ...jsonEvent,
+      body: Buffer.from(jsonEvent.body).toString('base64'),
+      isBase64Encoded: true,
+    }, { ...body, headers: jsonEvent.headers }]) {
+      assert.equal((await handler(event)).statusCode, 200);
+    }
+  }
+  assert.equal(fetch.mock.callCount(), 9);
   for (const call of fetch.mock.calls) {
     assert.deepEqual(JSON.parse(call.arguments[1].body).inputs, {
       target: payload.target,

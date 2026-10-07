@@ -53,13 +53,14 @@ async function verify() {
   for (const body of [null, [], 42, 'deploy', { ...payload, action: 42 },
     { ...payload, action: {} }, { ...payload, target: {} },
     { ...payload, caller: [] }, { ...payload, ami_override: {} },
-    { ...payload, caller: null }, { ...payload, ami_override: null }]) {
+    { ...payload, caller: false }, { ...payload, caller: 0 },
+    { ...payload, ami_override: false }, { ...payload, ami_override: 0 }]) {
     const response = await invoke(request(body));
     assert.equal(response.statusCode, 400, `malformed payload: ${JSON.stringify(body)}`);
     assert.equal(JSON.parse(response.body).ok, false);
   }
   assert.equal(dispatches().length, 0);
-  console.log('PASS: 11 authenticated malformed Lambda payloads return 400; HTTPS dispatches=0');
+  console.log('PASS: 13 authenticated malformed Lambda payloads return 400; HTTPS dispatches=0');
 
   assert.equal((await invoke({ body: JSON.stringify(payload) })).statusCode, 401);
   assert.equal((await invoke(request({ ...payload, control_token: 'wrong' }))).statusCode, 401);
@@ -67,15 +68,19 @@ async function verify() {
   assert.equal(dispatches().length, 0);
   console.log('PASS: authentication and self-deploy protection; HTTPS dispatches=0');
 
-  const jsonEvent = request({ ...payload, action: 'DEPLOY' });
-  for (const event of [jsonEvent, {
-    ...jsonEvent,
-    body: Buffer.from(jsonEvent.body).toString('base64'),
-    isBase64Encoded: true,
-  }, { ...payload, headers }]) {
-    assert.equal((await invoke(event)).statusCode, 200);
+  for (const optional of [{}, { caller: null }, { ami_override: null },
+    { caller: null, ami_override: null }]) {
+    const body = { ...payload, action: 'DEPLOY', ...optional };
+    const jsonEvent = request(body);
+    for (const event of [jsonEvent, {
+      ...jsonEvent,
+      body: Buffer.from(jsonEvent.body).toString('base64'),
+      isBase64Encoded: true,
+    }, { ...body, headers }]) {
+      assert.equal((await invoke(event)).statusCode, 200);
+    }
   }
-  assert.equal(dispatches().length, 3);
+  assert.equal(dispatches().length, 12);
   for (const dispatch of dispatches()) {
     assert.deepEqual(dispatch, {
       method: 'POST',
@@ -83,7 +88,7 @@ async function verify() {
       body: { ref: 'main', inputs: { target: payload.target, ami_override: '' } },
     });
   }
-  console.log('PASS: direct/JSON/base64 Lambda events return 200; exact HTTPS dispatches=3');
+  console.log('PASS: direct/JSON/base64 Lambda events with omitted or null optional fields return 200; exact HTTPS dispatches=12');
 }
 
 function run() {

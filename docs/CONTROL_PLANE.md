@@ -55,7 +55,7 @@ Goal: manage CLAWDINATOR host lifecycle (create/recreate/replace) from **CLAWDIN
 - `GITHUB_WORKFLOW` (default `fleet-deploy.yml`)
 - `GITHUB_REF` (default `main`)
 
-Requests must contain an object payload with string `action` and `target` fields. Optional `caller` and `ami_override` values must also be strings when provided. Malformed payloads return HTTP 400; missing or incorrect authentication returns HTTP 401.
+Requests must contain an object payload with string `action` and `target` fields. Optional `caller` and `ami_override` values accept strings or `null`. Omitting either field or setting it to `null` preserves the original defaults: no caller and an empty AMI override. Other non-string optional values are rejected. Malformed payloads return HTTP 400; missing or incorrect authentication returns HTTP 401.
 
 Run the control API regression tests without credentials or network access:
 

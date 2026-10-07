@@ -2,4 +2,4 @@
 
 ## Unreleased
 
-- Return client errors for malformed control API payloads instead of throwing or forwarding invalid workflow inputs.
+- Return client errors for malformed control API payloads instead of throwing or forwarding invalid workflow inputs, preserving omitted and null optional-field defaults.
