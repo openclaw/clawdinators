@@ -92,3 +92,26 @@ test('preserves optional null defaults across event formats', async (t) => {
     });
   }
 });
+
+test('direct Lambda invocation authenticates through the payload token', async (t) => {
+  const fetch = t.mock.method(globalThis, 'fetch', async () => ({ ok: true }));
+  for (const control_token of [undefined, null, '', 'wrong']) {
+    assert.equal((await handler({ ...payload, control_token })).statusCode, 401);
+  }
+  for (const event of [
+    { body: JSON.stringify(payload) },
+    { ...payload, requestContext: {} },
+    { ...payload, headers: {} },
+    { ...request(payload), headers: { 'x-clawdinator-token': 'wrong' } },
+    request({ ...payload, control_token: undefined }),
+  ]) {
+    assert.equal((await handler(event)).statusCode, 401);
+  }
+  assert.equal(fetch.mock.callCount(), 0);
+  assert.equal((await handler(payload)).statusCode, 200);
+  assert.equal(fetch.mock.callCount(), 1);
+  assert.deepEqual(JSON.parse(fetch.mock.calls[0].arguments[1].body).inputs, {
+    target: payload.target,
+    ami_override: '',
+  });
+});

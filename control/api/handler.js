@@ -53,10 +53,15 @@ exports.handler = async (event) => {
     return json(500, { ok: false, error: 'missing CONTROL_API_TOKEN' });
   }
 
-  const headers = event?.headers || {};
-  const token = getAuthToken(headers);
-  if (!token || token !== CONTROL_API_TOKEN) {
+  if (!event || typeof event !== 'object') {
     return unauthorized();
+  }
+  const httpEvent = Boolean(event.headers || event.requestContext || typeof event.body === 'string');
+  if (httpEvent) {
+    const token = getAuthToken(event.headers || {});
+    if (!token || token !== CONTROL_API_TOKEN) {
+      return unauthorized();
+    }
   }
 
   let payload;

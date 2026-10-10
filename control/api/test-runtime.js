@@ -65,8 +65,19 @@ async function verify() {
   assert.equal((await invoke({ body: JSON.stringify(payload) })).statusCode, 401);
   assert.equal((await invoke(request({ ...payload, control_token: 'wrong' }))).statusCode, 401);
   assert.equal((await invoke(request({ ...payload, caller: payload.target }))).statusCode, 400);
+  for (const control_token of [undefined, null, '', 'wrong']) {
+    assert.equal((await invoke({ ...payload, control_token })).statusCode, 401);
+  }
+  for (const event of [
+    { ...payload, headers: {} },
+    { ...payload, requestContext: {} },
+    { ...request(payload), headers: { 'x-clawdinator-token': 'wrong' } },
+    request({ ...payload, control_token: undefined }),
+  ]) {
+    assert.equal((await invoke(event)).statusCode, 401);
+  }
   assert.equal(dispatches().length, 0);
-  console.log('PASS: authentication and self-deploy protection; HTTPS dispatches=0');
+  console.log('PASS: direct/HTTP authentication and self-deploy protection; HTTPS dispatches=0');
 
   for (const optional of [{}, { caller: null }, { ami_override: null },
     { caller: null, ami_override: null }]) {
@@ -76,11 +87,11 @@ async function verify() {
       ...jsonEvent,
       body: Buffer.from(jsonEvent.body).toString('base64'),
       isBase64Encoded: true,
-    }, { ...body, headers }]) {
+    }, { ...body, headers }, body]) {
       assert.equal((await invoke(event)).statusCode, 200);
     }
   }
-  assert.equal(dispatches().length, 12);
+  assert.equal(dispatches().length, 16);
   for (const dispatch of dispatches()) {
     assert.deepEqual(dispatch, {
       method: 'POST',
@@ -88,7 +99,7 @@ async function verify() {
       body: { ref: 'main', inputs: { target: payload.target, ami_override: '' } },
     });
   }
-  console.log('PASS: direct/JSON/base64 Lambda events with omitted or null optional fields return 200; exact HTTPS dispatches=12');
+  console.log('PASS: payload-only/direct/JSON/base64 Lambda events with omitted or null optional fields return 200; exact HTTPS dispatches=16');
 }
 
 function run() {
