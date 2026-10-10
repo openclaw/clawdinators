@@ -82,12 +82,9 @@ find_image_row() {
   return 1
 }
 
-in_use_ami_ids=()
-while IFS= read -r image_id; do
-  if [ -n "${image_id}" ]; then
-    in_use_ami_ids+=("${image_id}")
-  fi
-done < <(
+# Capture lookup failures before building the keep-set; process substitutions
+# do not propagate their exit status to the parent shell.
+in_use_ami_ids_text="$(
   aws ec2 describe-instances \
     --region "${region}" \
     --filters \
@@ -98,7 +95,14 @@ done < <(
     tr '\t' '\n' |
     sed '/^None$/d;/^$/d' |
     sort -u
-)
+)"
+
+in_use_ami_ids=()
+while IFS= read -r image_id; do
+  if [ -n "${image_id}" ]; then
+    in_use_ami_ids+=("${image_id}")
+  fi
+done <<< "${in_use_ami_ids_text}"
 
 images_json="$(
   aws ec2 describe-images \
@@ -108,12 +112,7 @@ images_json="$(
     --output json
 )"
 
-image_rows=()
-while IFS= read -r row; do
-  if [ -n "${row}" ]; then
-    image_rows+=("${row}")
-  fi
-done < <(
+image_rows_text="$(
   printf '%s\n' "${images_json}" | jq -r '
     .Images
     | sort_by(.CreationDate)
@@ -127,7 +126,14 @@ done < <(
       ]
     | @tsv
   '
-)
+)"
+
+image_rows=()
+while IFS= read -r row; do
+  if [ -n "${row}" ]; then
+    image_rows+=("${row}")
+  fi
+done <<< "${image_rows_text}"
 
 if [ "${#image_rows[@]}" -eq 0 ]; then
   echo "No CLAWDINATOR AMIs found."
