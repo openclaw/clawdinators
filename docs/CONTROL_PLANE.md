@@ -47,6 +47,7 @@ Goal: manage CLAWDINATOR host lifecycle (create/recreate/replace) from **CLAWDIN
   - `clawdinator-control-aws-access-key-id.age`
   - `clawdinator-control-aws-secret-access-key.age`
 - Token is injected into instances via bootstrap and read from `/run/agenix/clawdinator-control-token`.
+- Direct Lambda invocations authenticate with `control_token` in the payload. HTTP requests must supply the same token in both the `x-clawdinator-token` header and the JSON payload; a payload token alone does not authorize an HTTP request.
 
 ## Control API Env (Lambda)
 - `CONTROL_API_TOKEN`
