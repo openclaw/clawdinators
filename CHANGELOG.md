@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Refresh Pi 0.52.6's dependencies and patch its FTP proxy parser against malicious directory listings, keeping the Pi version unchanged.
+
 - Accept the payload control token for direct Lambda invocations while preserving both HTTP token checks. Thanks @SebTardif (#17).
 
 - Return client errors for malformed control API payloads instead of throwing or forwarding invalid workflow inputs, preserving omitted and null optional-field defaults.
