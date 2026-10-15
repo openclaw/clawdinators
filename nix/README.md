@@ -28,6 +28,18 @@ nix-build nix/tests/gateway-executable.nix --option allow-import-from-derivation
 
 This checks argument and token forwarding for metadata-selected executables, metadata-free OpenClaw and legacy Moltbot packages, and a package containing both binaries (OpenClaw takes precedence), without deploying a host or contacting a provider.
 
+The Pi package stays at 0.52.6 while its vendored dependency lockfile receives security updates. Its `basic-ftp` override fixes directory-listing parser denial of service in the FTP fallback used by `get-uri` and the proxy agent. Development-only audit findings in Pi's upstream test tools remain outside the installed runtime; updating those tools requires a separate upstream test migration.
+
+Regenerate the lockfile from the published package's full `package.json`, preserving its upstream overrides and pinning the three Pi component dependencies to 0.52.6. Copying only the root lockfile metadata loses the upstream overrides and can leave dependencies missing from Nix's offline cache.
+
+Build and test the packaged CLI and its FTP dependency without provider credentials:
+
+```bash
+nix-build nix/tests/pi-package.nix --no-out-link
+```
+
+This checks the CLI version, help, and model listing, a local FTP download through `get-uri`, and a hostile FTP directory listing under a process timeout.
+
 Hosts:
 - `nix/hosts/clawdinator-1.nix` is the first host config (templated; no machine-specific secrets)
 

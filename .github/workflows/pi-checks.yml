@@ -1,0 +1,19 @@
+name: Pi package checks
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  pi-package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Install Nix
+        run: sudo apt-get update && sudo apt-get install -y nix-bin
+      - name: Test the packaged Pi CLI and FTP dependency
+        run: sudo nix-build nix/tests/pi-package.nix --no-out-link
