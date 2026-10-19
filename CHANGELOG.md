@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Replace target-held ClawSweeper App credentials with OIDC intake and Worker-owned acknowledgements, loading dispatch identity code only from the trusted event commit.
+
 - Refresh Pi 0.52.6's dependencies and patch its FTP proxy parser against malicious directory listings, keeping the Pi version unchanged.
 
 - Accept the payload control token for direct Lambda invocations while preserving both HTTP token checks. Thanks @SebTardif (#17).
